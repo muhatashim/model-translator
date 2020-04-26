@@ -16,9 +16,6 @@ public class TranslatorTest {
                 integer -> String.valueOf(integer).charAt(0),
                 it -> Integer.parseInt(String.valueOf(it)));
 
-        translator.addTranslationLeft(B::getA, A::setA, String::valueOf);
-        translator.addTranslationLeft(B::getC, A::setC, integer -> String.valueOf(integer).charAt(0));
-
 
         a.setA("1");
         a.setB(2);
@@ -27,8 +24,8 @@ public class TranslatorTest {
         b.setA(4);
         b.setB(5);
         b.setC(6);
-        System.out.println(translator.translateToRight(a));
-        System.out.println(translator.translateToLeft(b));
+        System.out.println(translator.translateToRight(a)); //returns B{a=1, b=2, c=3}
+        System.out.println(translator.translateToLeft(b)); //returns A{a='4', b=5, c=6}
     }
 
     public static class B {
