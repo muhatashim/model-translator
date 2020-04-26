@@ -9,11 +9,16 @@ public class TranslatorTest {
         B b = new B();
 
         Translator<A, B> translator = new Translator<>(A.class, B.class);
-        translator.addTranslationRight(A::getA, B::setA, Integer::parseInt);
-        translator.addTranslationRight(A::getC, B::setC, it -> Integer.parseInt(String.valueOf(it)));
+
+        translator.addTranslation(A::getA, B::getA, A::setA, B::setA, String::valueOf, Integer::parseInt);
+        translator.addTranslation(A::getB, B::getB, A::setB, B::setB);
+        translator.addTranslation(A::getC, B::getC, A::setC, B::setC,
+                integer -> String.valueOf(integer).charAt(0),
+                it -> Integer.parseInt(String.valueOf(it)));
+
         translator.addTranslationLeft(B::getA, A::setA, String::valueOf);
         translator.addTranslationLeft(B::getC, A::setC, integer -> String.valueOf(integer).charAt(0));
-        translator.addTranslation(A::getB, B::getB, A::setB, B::setB);
+
 
         a.setA("1");
         a.setB(2);
