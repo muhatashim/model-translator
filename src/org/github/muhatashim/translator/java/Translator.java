@@ -49,12 +49,21 @@ public class Translator<L, R> {
 
     public L translateToLeft(R rightObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         L leftObject = leftClass.getConstructor().newInstance();
-        mappingsToLeft.forEach((key, value) -> value.accept(leftObject, key.apply(rightObject)));
-        return leftObject;
+        return translateToLeft(leftObject, rightObject);
     }
 
     public R translateToRight(L leftObject) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         R rightObject = rightClass.getConstructor().newInstance();
+        return translateToRight(rightObject, leftObject);
+    }
+
+    public L translateToLeft(L leftObject, R rightObject) {
+        mappingsToLeft.forEach((key, value) -> value.accept(leftObject, key.apply(rightObject)));
+        return leftObject;
+    }
+
+
+    public R translateToRight(R rightObject, L leftObject) {
         mappingsToRight.forEach((key, value) -> value.accept(rightObject, key.apply(leftObject)));
         return rightObject;
     }
